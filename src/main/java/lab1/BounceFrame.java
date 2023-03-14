@@ -14,6 +14,16 @@ public class BounceFrame extends JFrame {
         return canvas;
     }
 
+    private BallThread createThread(Color color){
+        Ball b = new Ball(canvas, color);
+        canvas.add(b);
+        BallThread thread = new BallThread(b);
+        thread.start();
+        System.out.println("Thread name = " +
+                thread.getName());
+        return thread;
+    }
+
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Bounce programm");
@@ -30,24 +40,20 @@ public class BounceFrame extends JFrame {
         JButton buttonStop = new JButton("Stop");
 
         buttonStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < 10; i++) {
-                    Ball b = new Ball(canvas, Color.BLUE);
-                    canvas.add(b);
-                    BallThread thread = new BallThread(b, Thread.MIN_PRIORITY);
-                    thread.start();
-                    System.out.println("Thread name = " +
-                            thread.getName());
-                }
-                Ball b = new Ball(canvas, Color.RED);
-                canvas.add(b);
-                BallThread thread = new BallThread(b, Thread.MAX_PRIORITY);
-                thread.start();
-                System.out.println("Thread name = " +
-                        thread.getName());
-            }
-        });
+                                          @Override
+                                          public void actionPerformed(ActionEvent e) {
+                                              BallThread r_thread = createThread(Color.RED);
+                                              try {
+                                                  r_thread.join(2000);
+                                              } catch (InterruptedException er) {
+                                                  er.printStackTrace();
+                                              }
+                                              for (int i = 0; i < 10; i++) {
+                                                  createThread(Color.BLUE);
+                                              }
+                                          }
+                                      });
+
         buttonStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

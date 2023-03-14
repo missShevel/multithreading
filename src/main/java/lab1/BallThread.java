@@ -3,9 +3,8 @@ package lab1;
 public class BallThread extends Thread {
     private Ball b;
 
-    public BallThread(Ball ball, int priority) {
+    public BallThread(Ball ball) {
         b = ball;
-        this.setPriority(priority);
     }
 
     @Override
