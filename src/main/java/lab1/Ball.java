@@ -9,28 +9,22 @@ public class Ball {
     private Component canvas;
     private static final int XSIZE = 20;
     private static final int YSIZE = 20;
+    private Color color;
     private int x = 0;
     private int y = 0;
     private int dx = 2;
     private int dy = 2;
 
-    public Ball(Component c) {
+    public Ball(Component c, Color color){
         this.canvas = c;
-        if (Math.random() < 0.5) {
-            x = new Random().nextInt(this.canvas.getWidth());
-            y = 0;
-        } else {
-            x = 0;
-            y = new Random().nextInt(this.canvas.getHeight());
-        }
+        x = BallCanvas.WIDTH;
+        y = BallCanvas.HEIGHT/4;
+        this.color = color;
     }
 
-    public static void f() {
-        int a = 0;
-    }
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.darkGray);
+        g2.setColor(this.color);
         g2.fill(new Ellipse2D.Double(x, y, XSIZE, YSIZE));
     }
 
@@ -54,19 +48,6 @@ public class Ball {
             dy = -dy;
         }
         this.canvas.repaint();
-    }
-
-    public boolean isInLoosa() {
-        ArrayList<Loosa> loosas = BallCanvas.getLoosas();
-        int ball_X = x + XSIZE/2;
-        int ball_Y = y + YSIZE/2;
-
-        for (Loosa l : loosas) {
-            if (l.isIntersected(ball_X, ball_Y)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void removeFromCanvas() {

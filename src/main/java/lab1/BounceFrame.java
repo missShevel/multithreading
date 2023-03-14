@@ -9,13 +9,6 @@ public class BounceFrame extends JFrame {
     private static BallCanvas canvas;
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
-    private static int caughtBalls = 0;
-    private static JLabel caughtBallsLabel = new JLabel("# of caught balls: 0");
-
-    public static void addCaughtBalls() {
-        BounceFrame.caughtBalls += 1;
-        caughtBallsLabel.setText("# of caught balls: " + caughtBalls);
-    }
 
     public static BallCanvas getCanvas() {
         return canvas;
@@ -24,7 +17,7 @@ public class BounceFrame extends JFrame {
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Bounce programm");
-        this.canvas = new BallCanvas(WIDTH, HEIGHT);
+        this.canvas = new BallCanvas();
         System.out.println("In Frame Thread name = "
                 + Thread.currentThread().getName());
         Container content = this.getContentPane();
@@ -39,9 +32,17 @@ public class BounceFrame extends JFrame {
         buttonStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ball b = new Ball(canvas);
+                for (int i = 0; i < 10; i++) {
+                    Ball b = new Ball(canvas, Color.BLUE);
+                    canvas.add(b);
+                    BallThread thread = new BallThread(b, Thread.MIN_PRIORITY);
+                    thread.start();
+                    System.out.println("Thread name = " +
+                            thread.getName());
+                }
+                Ball b = new Ball(canvas, Color.RED);
                 canvas.add(b);
-                BallThread thread = new BallThread(b);
+                BallThread thread = new BallThread(b, Thread.MAX_PRIORITY);
                 thread.start();
                 System.out.println("Thread name = " +
                         thread.getName());
@@ -55,8 +56,6 @@ public class BounceFrame extends JFrame {
         });
         buttonPanel.add(buttonStart);
         buttonPanel.add(buttonStop);
-        buttonPanel.add(BounceFrame.caughtBallsLabel);
-
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
 }
