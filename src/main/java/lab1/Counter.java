@@ -3,10 +3,10 @@ package lab1;
 public class Counter {
     private int value;
 
-    void increment() {
+    public synchronized void  increment() {
         value += 1;
     }
-    void decrement() {
+    public synchronized void decrement() {
         value -= 1;
     }
     int getValue() {
