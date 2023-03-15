@@ -14,9 +14,13 @@ public class CountingThread extends Thread {
     public void run() {
         for (int i = 0; i < repeats; i++){
             if (action == '+') {
-                counter.increment();
+                synchronized (counter) {
+                    counter.increment();
+                }
             } else {
-                counter.decrement();
+                synchronized (counter) {
+                    counter.decrement();
+                }
             }
             System.out.println("Value: " + counter.getValue());
         }
