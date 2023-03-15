@@ -1,24 +1,18 @@
 package lab1;
 
 public class Main {
-    public static void main(String[] args) {
-        try {
-            for (int i = 0; i < 100; i++) {
-                ThreadQueue queue = new ThreadQueue();
-                PrintSymbol thr1 = new PrintSymbol("-", queue);
-                PrintSymbol thr2 = new PrintSymbol("|", queue);
-                thr1.start();
-                thr2.start();
+    public static void main(String[] args) throws InterruptedException {
 
-                thr1.join();
-                thr2.join();
+        Counter counter = new Counter();
+        CountingThread thr_1 = new CountingThread(counter, '+');
+        CountingThread thr_2 = new CountingThread(counter, '-');
 
-                System.out.println();
+        thr_1.start();
+        thr_2.start();
 
-            }
+        thr_1.join();
+        thr_2.join();
 
-        } catch (InterruptedException e) {
-
-        }
+        System.out.println(counter.getValue());
     }
 }
