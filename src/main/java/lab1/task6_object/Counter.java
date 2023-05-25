@@ -10,16 +10,17 @@ public class Counter {
         locker.lock();
         value += 1;
         locker.unlock();
-
-
     }
+
     public void decrement() throws InterruptedException {
         locker.lock();
-        value -= 1;
-        locker.unlock();
-
-
+        try {
+            value -= 1;
+        } finally {
+            locker.unlock();
+        }
     }
+
     public int getValue() {
         return this.value;
     }
