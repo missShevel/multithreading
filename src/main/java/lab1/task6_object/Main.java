@@ -1,4 +1,4 @@
-package lab1;
+package lab1.task6_object;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
